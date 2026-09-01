@@ -1,19 +1,21 @@
 #!/system/bin/sh
 # Magisk Module Installation Script
-# This script copies the bootanimation.zip to the correct location
-
 MODDIR=${0%/*}
 
-# Crea la cartella di destinazione se non esiste
-mkdir -p $MODPATH/system/product/media
+# Crea la cartella di destinazione nel modulo
+mkdir -p "$MODDIR/system/product/media"
 
-# Copia il bootanimation.zip nella posizione corretta
+# Copia il bootanimation.zip nella struttura del modulo
 if [ -f "$MODDIR/bootanimation.zip" ]; then
-    cp "$MODDIR/bootanimation.zip" "$MODPATH/system/product/media/bootanimation.zip"
-    chmod 644 "$MODPATH/system/product/media/bootanimation.zip"
-    echo "✓ Bootanimation installata con successo!"
+    cp "$MODDIR/bootanimation.zip" "$MODDIR/system/product/media/bootanimation.zip"
+    chmod 644 "$MODDIR/system/product/media/bootanimation.zip"
+    
+    # Forza anche il link simbolico (se esiste)
+    ln -sf bootanimation.zip "$MODDIR/system/product/media/bootanimation-dark.zip"
+    
+    echo "✓ Bootanimation installata!"
 else
-    echo "✗ Errore: bootanimation.zip non trovato!"
+    echo "✗ ERRORE: bootanimation.zip non trovato in $MODDIR"
     exit 1
 fi
 
